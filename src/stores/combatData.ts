@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 //   combatants: ExtendData[]
 // }
 
-export const usecombatDataStore = defineStore('combatData', {
+export const useCombatDataStore = defineStore('combatData', {
   state: () => {
     return { 
       combatData: {
