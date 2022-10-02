@@ -1,6 +1,6 @@
 <template>
   <n-popover width="trigger" placement="top" :overlap="true" :show-arrow="false">
-    <n-space size="small" :wrap-item="false">
+    <n-space :style="{ 'padding': '0 0 0 0', height: height - 16 + 'px' }">
       <n-tag strong size="small" :bordered="false">
         Crit: {{ combatantInfo.critHitPct }}
       </n-tag>
@@ -10,47 +10,37 @@
       <n-tag strong size="small" :bordered="false">
         DirectCrit: {{ combatantInfo.directCritHitPct }}
       </n-tag>
-      <!-- <n-tag strong size="small" :bordered="false">
-        Death: {{ combatantInfo.deaths }}
-      </n-tag> -->
     </n-space>
     <template #trigger>
-      <n-grid :x-gap="16" :cols="5" style="margin-top: 4px">
-        <n-grid-item :span="2">
+      <n-grid :x-gap="20" :cols="11">
+        <n-grid-item :span="4">
           <n-space vertical>
-            <n-card
-              :bordered="false" 
-              style="text-align: center; height: 36px"
-              content-style="padding: 4px 12px 4px 0"
-            >
-              <n-h3 prefix="bar">{{ combatantInfo.dps }}</n-h3>
+            <n-card :bordered="false" :header-style="{ 'padding': '16px 0 16px 0', height: height + 'px' }">
+              <template #header>
+                <n-space vertical>
+                  <n-h3 prefix="bar" style="margin-right: 8px; margin-bottom: 0; text-align: center;">{{ combatantInfo.dps }}</n-h3>
+                </n-space>
+              </template>
             </n-card>
-            <!-- <n-card
-              :bordered="false" 
-              style="text-align: center; height: 20px"
-              content-style="padding: 0 0 0 0"
-            >
-              <n-p style="margin-bottom: 0; font-size: xx-small;">
-                {{ combatantInfo.job.toUpperCase() }}/{{ combatantInfo.damagePct }}
-              </n-p> -->
-            <!-- </n-card> -->
           </n-space>
         </n-grid-item>
-        <n-grid-item :span="3">
-          <n-space vertical style="gap: 4px 2px">
-            <n-h6 style="margin: -4px 0 0px 0"> {{ combatantInfo.name }} </n-h6>
-            <n-statistic style="margin-top: -12px">
-              <!-- <template #label>
-                <n-tag strong size="small" :bordered="false" style="margin: 10px 0px 0px -4px;">Max</n-tag>
-              </template> -->
-              <n-space>
-                <n-p style="margin-bottom: 0; font-size: xx-small;">{{ combatantInfo.maxHit }}</n-p>
-                <n-p style="margin-bottom: 0; font-size: xx-small;">{{ combatantInfo.maxHitDamage }}</n-p>
-              </n-space>
-            </n-statistic>
-          </n-space>
+        <n-grid-item :span="7" >
+          <n-grid :cols="height > 32 ? 1 : 3" style="height: 100%">
+            <n-grid-item :span="1" style="b">
+              <n-h6 style="margin-bottom: 0"> {{ combatantInfo.name }} </n-h6>
+            </n-grid-item>
+            <n-grid-item :span="height > 32 ? 1 : 2" style="position: relative">
+              <n-statistic :style="height > 32 ? { position: 'absolute', bottom: '1px' } : { position: 'absolute', right: '16px' }">
+                <n-space>
+                  <n-p style="margin-bottom: 0">{{ combatantInfo.maxHit }}</n-p>
+                  <n-p style="margin-bottom: 0">{{ combatantInfo.maxHitDamage }}</n-p>
+                  <!-- <n-p style="margin-bottom: 0">{{ 'DirectCrit :' + combatantInfo.directCritHitPct }}</n-p> -->
+                </n-space>
+              </n-statistic>
+            </n-grid-item>
+          </n-grid>
         </n-grid-item>
-        <n-grid-item :span="5">
+        <n-grid-item :span="11">
           <n-progress 
             color="salmon" 
             type="line" 
@@ -58,9 +48,11 @@
             :processing="active"
             :border-radius="4"
             :fill-border-radius="0"
-            :show-indicator="false"
+            :show-indicator="true"
             :percentage="parseInt(combatantInfo.damagePct.replace('%', ''))"
-            style="margin: 0px 0 0 0"/>
+            style="margin: 0 0 0 0">
+              <!-- <n-p style="margin-bottom: 0" depth="2">{{ 'DirectCrit: ' + combatantInfo.directCritHitPct }}</n-p> -->
+          </n-progress>
         </n-grid-item>
       </n-grid>
     </template>
@@ -68,7 +60,9 @@
 </template>
 
 <script lang="ts" >
-   import { NH3, NH6, NP, NCard, NTag, NSpace, NStatistic, NGrid, NGridItem, NProgress, NPopover } from 'naive-ui'
+   import { NH3, NH6, NP, NCard, NTag, NSpace, NStatistic, NLayout, NLayoutHeader, NLayoutFooter, NGrid, NGridItem, NProgress, NPopover } from 'naive-ui'
+   import { floor } from 'lodash';
+import type { pxfy } from 'seemly';
    export default {
     components: { 
       NH3,
@@ -79,10 +73,18 @@
       NCard, 
       NSpace,
       NStatistic,
+      NLayout,
+      NLayoutHeader, 
+      NLayoutFooter,
       NGrid,
       NGridItem,
       NProgress
     },
-    props: [ 'active', 'combatantInfo']
+    props: [ 'active', 'combatantInfo', 'height' ],
+    computed: {
+      namePannelHeight(): number {
+        return floor(this.height/3)
+      }
+    }
    }
 </script>
