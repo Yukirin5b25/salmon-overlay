@@ -99,7 +99,6 @@
       playerName() {
         var name = this.combatantInfo.name;
         if (this.blurPlayerNames) {
-          console.log("should see this")
           name = this.combatantInfo.job.toUpperCase()
         } else if (this.combatantInfo.name === 'YOU') {
           name = this.primaryPlayer !== '' ? this.primaryPlayer : name
