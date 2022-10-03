@@ -10,7 +10,7 @@
       </template>
       <n-tab-pane name="DPS" tab="DPS">
         <n-grid :cols="1">
-          <n-grid-item :span="1" v-for="combatant in combatants.slice(0, (max(overlayConfigs.maxCombatants)))" :key="combatant.name">
+          <n-grid-item :span="1" v-for="combatant in slicedCombatants" :key="combatant.name">
             <CombatantCard
               mode="DPS"
               :active="active" 
@@ -24,7 +24,7 @@
       </n-tab-pane>
       <n-tab-pane name="HPS" tab="HPS">
         <n-grid :cols="1">
-          <n-grid-item :span="1" v-for="combatant in combatants.slice(0, (max(overlayConfigs.maxCombatants)))" :key="combatant.name">
+          <n-grid-item :span="1" v-for="combatant in slicedCombatants" :key="combatant.name">
             <CombatantCard
               mode="HPS"
               :active="active"
@@ -48,7 +48,6 @@
   import { useCombatDataStore } from '@/stores/combatData'
   import { useOverlaySizeStore } from '@/stores/overlaySize'
   import { useOverlayConfigsStore } from '@/stores/overlayConfigs'
-  import { floor } from 'lodash';
 
   export default {
     setup() {
@@ -76,7 +75,10 @@
     components: { NLayout, NDivider, CombatantCard, EncounterBar, NTabs, NTabPane, NGrid, NGridItem, },
     computed: {
       combatantCardHeight() {
-        return floor(this.overlaySize.height / 9) - 8
+        return Math.floor(this.overlaySize.height / 9) - 8
+      },
+      slicedCombatants() {
+        return this.combatants.slice(0, Math.max(this.overlayConfigs.maxCombatants, 0))
       }
     },
     methods: {
