@@ -1,5 +1,5 @@
 <template>
-  <n-popover width="trigger" placement="top" :overlap="true" :show-arrow="false">
+  <n-popover :disabled="mode === 'HPS'" width="trigger" placement="top" :overlap="true" :show-arrow="false">
     <n-space :style="{ 'padding': '0 0 0 0', height: height - 16 + 'px' }">
       <n-tag strong size="small" :bordered="false">
         Crit: {{ combatantInfo.critHitPct }}
@@ -18,7 +18,8 @@
             <n-card :bordered="false" :header-style="{ 'padding': '16px 0 16px 0', height: height + 'px' }">
               <template #header>
                 <n-space vertical>
-                  <n-h3 prefix="bar" style="margin-right: 8px; margin-bottom: 0; text-align: center;">{{ combatantInfo.dps }}</n-h3>
+                  <n-h3 v-if="mode === 'DPS'" prefix="bar" type="error" style="margin-right: 8px; margin-bottom: 0; text-align: center;">{{ combatantInfo.dps }}</n-h3>
+                  <n-h3 v-if="mode === 'HPS'" prefix="bar" type="primary" style="margin-right: 8px; margin-bottom: 0; text-align: center;">{{ combatantInfo.hps }}</n-h3>
                 </n-space>
               </template>
             </n-card>
@@ -32,9 +33,10 @@
             <n-grid-item :span="height > 32 ? 1 : 2" style="position: relative">
               <n-statistic :style="height > 32 ? { position: 'absolute', bottom: '1px' } : { position: 'absolute', right: '16px' }">
                 <n-space>
-                  <n-p style="margin-bottom: 0">{{ combatantInfo.maxHit }}</n-p>
-                  <n-p style="margin-bottom: 0">{{ combatantInfo.maxHitDamage }}</n-p>
-                  <!-- <n-p style="margin-bottom: 0">{{ 'DirectCrit :' + combatantInfo.directCritHitPct }}</n-p> -->
+                  <n-p v-if="mode === 'DPS'" style="margin-bottom: 0">{{ combatantInfo.maxHit }}</n-p>
+                  <n-p v-if="mode === 'DPS'" style="margin-bottom: 0">{{ combatantInfo.maxHitDamage }}</n-p>
+                  <n-p v-if="mode === 'HPS' && combatantInfo.maxHeal" style="margin-bottom: 0">{{ combatantInfo.maxHeal }}</n-p>
+                  <n-p v-if="mode === 'HPS' && combatantInfo.maxHeal" style="margin-bottom: 0">{{ combatantInfo.maxHealDamage }}</n-p>
                 </n-space>
               </n-statistic>
             </n-grid-item>
@@ -42,6 +44,7 @@
         </n-grid-item>
         <n-grid-item :span="11">
           <n-progress 
+            v-if="mode === 'DPS'"
             color="salmon" 
             type="line" 
             :height="6"
@@ -51,7 +54,18 @@
             :show-indicator="false"
             :percentage="parseInt(combatantInfo.damagePct.replace('%', ''))"
             style="margin: 0 0 0 0">
-              <!-- <n-p style="margin-bottom: 0" depth="2">{{ 'DirectCrit: ' + combatantInfo.directCritHitPct }}</n-p> -->
+          </n-progress>
+          <n-progress 
+            v-if="mode === 'HPS'"
+            color="lightseagreen" 
+            type="line" 
+            :height="6"
+            :processing="active"
+            :border-radius="4"
+            :fill-border-radius="0"
+            :show-indicator="false"
+            :percentage="parseInt(combatantInfo.healsPct.replace('%', ''))"
+            style="margin: 0 0 0 0">
           </n-progress>
         </n-grid-item>
       </n-grid>
@@ -77,7 +91,7 @@
       NGridItem,
       NProgress
     },
-    props: [ 'active', 'combatantInfo', 'height' ],
+    props: [ 'active', 'combatantInfo', 'height', 'mode' ],
     computed: {
       namePannelHeight() {
         return floor(this.height/3)
