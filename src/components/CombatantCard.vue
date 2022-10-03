@@ -28,7 +28,7 @@
         <n-grid-item :span="7" >
           <n-grid :cols="height > 32 ? 1 : 3" style="height: 100%">
             <n-grid-item :span="1" style="b">
-              <n-h6 style="margin-bottom: 0"> {{ combatantInfo.name }} </n-h6>
+              <n-h6 style="margin-bottom: 0"> {{ playerName }} </n-h6>
             </n-grid-item>
             <n-grid-item :span="height > 32 ? 1 : 2" style="position: relative">
               <n-statistic :style="height > 32 ? { position: 'absolute', bottom: '1px' } : { position: 'absolute', right: '16px' }">
@@ -74,7 +74,7 @@
 </template>
 
 <script >
-   import { NH3, NH6, NP, NCard, NTag, NSpace, NStatistic, NLayout, NLayoutHeader, NLayoutFooter, NGrid, NGridItem, NProgress, NPopover } from 'naive-ui'
+   import { NH3, NH6, NP, NCard, NTag, NSpace, NStatistic, NGrid, NGridItem, NProgress, NPopover } from 'naive-ui'
    import { floor } from 'lodash';
    
    export default {
@@ -91,10 +91,20 @@
       NGridItem,
       NProgress
     },
-    props: [ 'active', 'combatantInfo', 'height', 'mode' ],
+    props: [ 'active', 'combatantInfo', 'height', 'mode', 'primaryPlayer', 'blurPlayerNames' ],
     computed: {
       namePannelHeight() {
         return floor(this.height/3)
+      },
+      playerName() {
+        var name = this.combatantInfo.name;
+        if (this.blurPlayerNames) {
+          console.log("should see this")
+          name = this.combatantInfo.job.toUpperCase()
+        } else if (this.combatantInfo.name === 'YOU') {
+          name = this.primaryPlayer !== '' ? this.primaryPlayer : name
+        }  
+        return name
       }
     }
    }

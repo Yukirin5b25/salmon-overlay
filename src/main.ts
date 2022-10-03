@@ -4,6 +4,7 @@ import { OverlayAPI } from 'ffxiv-overlay-api';
 
 import { useCombatDataStore } from '@/stores/combatData';
 import { useOverlaySizeStore } from '@/stores/overlaySize';
+import { useOverlayConfigsStore } from '@/stores/overlayConfigs'
 
 import App from './App.vue';
 // import router from './router';
@@ -18,9 +19,20 @@ app.use(createPinia());
 
 const combatDataStore = useCombatDataStore();
 const overlaySizeStore = useOverlaySizeStore();
+const overlayConfigsStore = useOverlayConfigsStore();
+
+
+// overlay.addListener('ChangeZone', (data) => {
+//   console.log("Zone changed: ", data.zoneID)
+// });
 
 overlay.addListener('CombatData', (data) => {
   combatDataStore.update(data.extendData)
+});
+
+overlay.addListener('ChangePrimaryPlayer', (data) => {
+  console.log("PrimaryPlayer changed: ", data.charID, ":", data.charName)
+  overlayConfigsStore.updatePrimaryPlayer(data.charName)
 });
 
 window.addEventListener('resize', () => {
