@@ -10,7 +10,7 @@
       </template>
       <n-tab-pane name="DPS" tab="DPS">
         <n-grid :cols="1">
-          <n-grid-item :span="1" v-for="combatant in combatants.slice(0, overlayConfigs.maxCombatants)" :key="combatant.name">
+          <n-grid-item :span="1" v-for="combatant in combatants.slice(0, (max(overlayConfigs.maxCombatants)))" :key="combatant.name">
             <CombatantCard
               mode="DPS"
               :active="active" 
@@ -24,7 +24,7 @@
       </n-tab-pane>
       <n-tab-pane name="HPS" tab="HPS">
         <n-grid :cols="1">
-          <n-grid-item :span="1" v-for="combatant in combatants" :key="combatant.name">
+          <n-grid-item :span="1" v-for="combatant in combatants.slice(0, (max(overlayConfigs.maxCombatants)))" :key="combatant.name">
             <CombatantCard
               mode="HPS"
               :active="active"
