@@ -1,11 +1,12 @@
 <template>
   <n-config-provider  :theme="darkTheme" :theme-overrides="themeOverrides">
-    <RouterView />
+    <CombatantOverlay />
   </n-config-provider>
 </template>
 
 <script lang="ts">
-  import { RouterView } from 'vue-router'
+  // import { RouterView } from 'vue-router'
+  import CombatantOverlay from '@/views/CombatantOverlay.vue'
   import { NConfigProvider, darkTheme, lightTheme } from 'naive-ui'
   export default {
     setup () {
@@ -24,7 +25,7 @@
         themeOverrides
       }
     },
-    components: { NConfigProvider, RouterView }
+    components: { NConfigProvider, CombatantOverlay }
   }
 </script>
 

@@ -14,7 +14,7 @@
   </n-layout>
 </template>
 
-<script lang="ts">
+<script>
   import CombatantCard from '@/components/CombatantCard.vue'
   import EncounterBar from '@/components/EncounterBar.vue'
   import { NLayout, NDivider, NGrid, NGridItem } from 'naive-ui'
@@ -41,7 +41,7 @@
     },
     components: { NLayout, NDivider, CombatantCard, EncounterBar, NGrid, NGridItem, },
     computed: {
-      combatantCardHeight(): number {
+      combatantCardHeight() {
         return floor(this.overlaySize.height / 9) - 8
       }
     }

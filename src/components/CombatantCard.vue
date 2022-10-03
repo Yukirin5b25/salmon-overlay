@@ -48,7 +48,7 @@
             :processing="active"
             :border-radius="4"
             :fill-border-radius="0"
-            :show-indicator="true"
+            :show-indicator="false"
             :percentage="parseInt(combatantInfo.damagePct.replace('%', ''))"
             style="margin: 0 0 0 0">
               <!-- <n-p style="margin-bottom: 0" depth="2">{{ 'DirectCrit: ' + combatantInfo.directCritHitPct }}</n-p> -->
@@ -59,10 +59,10 @@
   </n-popover>
 </template>
 
-<script lang="ts" >
+<script >
    import { NH3, NH6, NP, NCard, NTag, NSpace, NStatistic, NLayout, NLayoutHeader, NLayoutFooter, NGrid, NGridItem, NProgress, NPopover } from 'naive-ui'
    import { floor } from 'lodash';
-import type { pxfy } from 'seemly';
+   
    export default {
     components: { 
       NH3,
@@ -73,16 +73,13 @@ import type { pxfy } from 'seemly';
       NCard, 
       NSpace,
       NStatistic,
-      NLayout,
-      NLayoutHeader, 
-      NLayoutFooter,
       NGrid,
       NGridItem,
       NProgress
     },
     props: [ 'active', 'combatantInfo', 'height' ],
     computed: {
-      namePannelHeight(): number {
+      namePannelHeight() {
         return floor(this.height/3)
       }
     }
