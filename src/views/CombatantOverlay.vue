@@ -1,8 +1,8 @@
 <template>
-  <n-layout v-if="combatants.length != 0" content-style="padding: 2px 2px 2px 2px" :native-scrollbar="false">
+  <n-layout content-style="padding: 2px 2px 2px 2px" :native-scrollbar="false">
     <EncounterBar :encounterInfo="encounter"></EncounterBar>
     <n-divider style="margin: 4px 0 4px 0"></n-divider>
-    <n-tabs animated size="small" default-value="DPS" trigger="hover" @update:value="updatePannelMode" :tabs-padding="16" pane-style="padding-top: 4px">
+    <n-tabs v-if="combatants.length != 0" animated size="small" default-value="DPS" trigger="hover" @update:value="updatePannelMode" :tabs-padding="16" pane-style="padding-top: 4px">
       <template #suffix>
         <div style="margin-right: 8px">
           {{ pannelMode === 'DPS' ? encounter.dps : encounter.hps }}
@@ -15,7 +15,7 @@
               mode="DPS"
               :active="active" 
               :blur-player-names="overlayConfigs.blurPlayerNames"
-              :primary-player="overlayConfigs.primaryPlayer"
+              :primary-player="primaryPlayer.name"
               :combatant-info="combatant"
               :height="combatantCardHeight"
             />
@@ -29,7 +29,7 @@
               mode="HPS"
               :active="active"
               :blur-player-names="overlayConfigs.blurPlayerNames"
-              :primary-player="overlayConfigs.primaryPlayer"
+              :primary-player="primaryPlayer.name"
               :combatant-info="combatant"
               :height="combatantCardHeight"
             />
@@ -48,12 +48,14 @@
   import { useCombatDataStore } from '@/stores/combatData'
   import { useOverlaySizeStore } from '@/stores/overlaySize'
   import { useOverlayConfigsStore } from '@/stores/overlayConfigs'
+  import { usePrimaryPlayerStore } from '@/stores/primaryPlayer'
 
   export default {
     setup() {
       const combatDataStore = useCombatDataStore()
       const overlaySizeStore = useOverlaySizeStore()
       const overlayConfigsStore = useOverlayConfigsStore()
+      const primaryPlayerStore = usePrimaryPlayerStore()
 
       const active = computed(() => combatDataStore.combatData.active )
       const encounter = computed(() => combatDataStore.combatData.encounter )
@@ -61,6 +63,7 @@
 
       const overlaySize = computed(() => overlaySizeStore.window )
       const overlayConfigs = computed(() => overlayConfigsStore.configs )
+      const primaryPlayer = computed(() => primaryPlayerStore.primaryPlayer)
       const pannelMode = 'DPS';
 
       return { 
@@ -69,6 +72,7 @@
         combatants,
         overlaySize,
         overlayConfigs,
+        primaryPlayer,
         pannelMode
       };
     },
