@@ -26,14 +26,12 @@
     </template>
   </n-page-header>
   <n-modal v-model:show="showConfigModal">
-    <n-card title="Overlay Configs">
-      <ConfigForm/>
-    </n-card>
+    <ConfigForm/>
   </n-modal>
 </template>
 
 <script >
-  import { NDivider, NH6, NPageHeader, NSpace, NButton, NIcon, NModal, NCard } from 'naive-ui'
+  import { NDivider, NH6, NPageHeader, NSpace, NButton, NIcon, NModal } from 'naive-ui'
   import { IosSettings } from '@vicons/ionicons4'
   import { ref } from 'vue'
   import ConfigForm from '@/components/ConfigForm.vue'
@@ -43,7 +41,7 @@
         showConfigModal: ref(false)
       }
     },
-    components: { NDivider, NH6, NPageHeader, NSpace, NIcon, NButton, NModal, NCard, IosSettings, ConfigForm },
+    components: { NDivider, NH6, NPageHeader, NSpace, NIcon, NButton, NModal, IosSettings, ConfigForm },
     props: ['encounterInfo']
   }
 </script>
