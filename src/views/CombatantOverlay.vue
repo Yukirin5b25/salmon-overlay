@@ -79,7 +79,7 @@
     components: { NLayout, NDivider, CombatantCard, EncounterBar, NTabs, NTabPane, NGrid, NGridItem, },
     computed: {
       combatantCardHeight() {
-        return Math.floor(this.overlaySize.height / 9) - 8
+        return Math.floor(this.overlaySize.height / 10) - 8
       },
       slicedCombatants() {
         return this.combatants.slice(0, Math.max(this.overlayConfigs.maxCombatants, 0))
